@@ -1,4 +1,5 @@
 const Ship = require('./ship');  // Adjust path accordingly
+const Gameboard = require('./gameBoard');  // Adjust path accordingly
 
 describe('Ship Class', () => {
 
@@ -49,57 +50,100 @@ describe('Ship Class', () => {
 
 });
 
-describe('Gameboard Class', () => {
+describe.only('GameBoard Class', () => {
+
+    let gb;  // Declare gb outside to make it available for all tests.
+
+    beforeEach(() => {
+        gb = new Gameboard();  // Re-initialize gb before each test
+    });
+      
 
     test('height of gb should be equal to 10', () => {
-        const gb = new gameBoard();
         expect(gb.height).toBe(10);
     });
 
     test('width of gb should be equal to 10', () => {
-        const gb = new gameBoard();
         expect(gb.width).toBe(10);
     });
 
-    test('gb should be able to place ships at specific coordinates by calling the ship factory function and returing true for valid placement', () => {
-        const gb = new gameBoard();
-        const ship = new Ship("Cruiser");
-        let shipHead = "B7";
-        let shipOrientation = "Vertical";
-        expect(gb.placeShip(ship, shipHead, shipOrientation)).toBeTruthy();
+    test('checkAt should return true for an empty cell', () => {
+        expect(gb.checkAt("A1")).toBeTruthy();
     });
 
-    test('gb should NOT be able to place ships that exist at an exiting location and return false for invalid placement', () => {
-        const gb = new gameBoard();
-        const shipOne = new Ship("Cruiser");
-        const shipTwo = new Ship("Cruiser");
-        let shipHead = "B7";
-        let shipOrientation = "Vertical";
-        gb.placeShip(shipOne, shipHead, shipOrientation);
-        expect(gb.placeShip(shipTwo, shipHead, shipOrientation)).toBeFalsy();
+    test('checkAt should be able to check if ship already exists on coordinate', () => {
+        let coordinate = "B7";
+        gb.setAt(coordinate, "Ship");
+        expect(gb.checkAt("B7")).toBeFalsy();
     });
 
-    test('gb should be able to check the coordinates for a ship', () => {
-        const gb = new gameBoard();
-        const ship = new Ship("Cruiser");
-        let shipHead = "B7";
-        let shipOrientation = "Horizontal";
-        gb.placeShip(ship, shipHead, shipOrientation);
-        expect(gb.shipCoordinates(ship)).toBe(["B7, C7, D7"]);
+
+    test('checkAt should throw an error for an out-of-bounds cell', () => {
+         expect(() => gb.checkAt("K10")).toThrow("Invalid coordinate alias.");
     });
 
-    test('gb should be able to check if attack is successful', () => {
-        const gb = new gameBoard();
-        const ship = new Ship("Cruiser");
-        let shipHead = "B7";
-        let shipOrientation = "Horizontal";
-        gb.placeShip(ship, shipHead, shipOrientation);
-        expect(gb.receieveAttack("B7")).toBeTruthy();
+    test('getBelowAlias should return the cell below', () => {
+        expect(gb.getBelowAlias("A1")).toBe("B1");
+        expect(gb.getBelowAlias("B5")).toBe("C5");
+    });
+    
+    test('getBelowAlias should throw an error for a bottom-row cell', () => {
+        expect(() => gb.getBelowAlias("J10")).toThrow("There is no row below this.");
     });
 
-    // test('gb should be able to check if attack is successful', () => {
-    //     const gb = new gameBoard();
-    //     expect(gb.missedAttack("B7")).toBeTruthy();
-    // });
+    test('getRightAlias should return the cell to the right', () => {
+        expect(gb.getRightAlias("A1")).toBe("A2");
+        expect(gb.getRightAlias("B5")).toBe("B6");
+    });
+    
+    test('getRightAlias should throw an error for a rightmost-column cell', () => {
+        expect(() => gb.getRightAlias("A10")).toThrow("There is no column to the right of this.");
+    });
+
+    test('placeShip should place a vertical ship correctly', () => {
+        expect(gb.placeShip("Cruiser", "A1", "Vertical")).toEqual(["A1", "B1", "C1"]);
+        // Add more assertions to check that board state was modified correctly
+    });
+    
+    test('placeShip should place a horizontal ship correctly', () => {
+        expect(gb.placeShip("Cruiser", "A1", "Horizontal")).toEqual(["A1", "A2", "A3"]);
+        // Add more assertions to check that board state was modified correctly
+    });
+    
+    test('placeShip should return false if ship cannot be placed due to existing ship', () => {
+        gb.placeShip("Submarine", "A1", "Vertical");
+        expect(gb.placeShip("Cruiser", "A1", "Vertical")).toBeFalsy();
+        expect(gb.ship["Cruiser"].coordinates).toEqual([]);
+    });
+    
+    test('receiveAttack should call the "hit()" function to the correct ship if true and update gameboard', () =>{
+        gb.placeShip("Submarine", "A1", "Vertical");
+        expect(gb.receiveAttack("A1")).toBeTruthy();
+        expect(gb.ship["Submarine"].instance.hitCount).toBe(1);
+        expect(gb.hitMovesArray).toEqual(["A1"]);
+    });
+
+    test('receiveAttack should push a move to the missedMovesArray if false and update gameboard', () =>{
+        gb.placeShip("Submarine", "A1", "Vertical");
+        expect(gb.receiveAttack("A2")).toBeFalsy();
+        expect(gb.receiveAttack("C3")).toBeFalsy();
+        expect(gb.missedMovesArray).toEqual(["A2", "C3"]);
+    });
+
+    test('gameOver should return true if all ships sank', () => {
+        gb.setAllShipsToDead();
+        expect(gb.gameOver()).toBeTruthy();
+    });
+
+    test('gameOver should return false if not ships sank', () => {
+        gb.setAllShipsToDead();
+        gb.ship["Battleship"].instance.isDead = false;
+        expect(gb.gameOver()).toBeFalsy();
+    });
+
+
+  
+
+
 
 });
