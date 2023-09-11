@@ -159,7 +159,9 @@ class Gameboard {
                 }
         
                 this.ship[shipName].coordinates.push(currentCoordinate);
-                currentCoordinate = getNextCoordinate(currentCoordinate);
+                if (i < shipLength - 1) {
+                    currentCoordinate = getNextCoordinate(currentCoordinate);
+                }
             }
         
             // Place the ship
@@ -180,6 +182,7 @@ class Gameboard {
                     if (shipCoordinates.includes(coordinate)) {
                         this.ship[shipName].instance.hit();
                         this.hitMovesArray.push(coordinate);
+                        this.setAt(coordinate, "Hit");
                         return true;
                     }
                 }
@@ -187,6 +190,7 @@ class Gameboard {
             } else {
                 this.missCount += 1;
                 this.missedMovesArray.push(coordinate);
+                this.setAt(coordinate, "Miss");
                 return false;
             }
         }
@@ -204,6 +208,41 @@ class Gameboard {
                 }       
             }
             return true;
+        }
+
+        display() {
+            // Create the header with column numbers
+            let header = "    ";
+            for (let i = 1; i <= this.width; i++) {
+                header += i + " ";
+            }
+            console.log(header);
+        
+            // Iterate through each row and print them
+            for (let i = 0; i < this.height; i++) {
+                let rowString = String.fromCharCode(65 + i) + " | "; // Convert row index to A-J and add the separator
+                for (let j = 0; j < this.width; j++) {
+                    // Check each cell's value and decide what to print
+                    let cellValue = this.board[i][j];
+        
+                    // Decide the cell's display based on its value
+                    switch (cellValue) {
+                        case "Ship":
+                            rowString += "S "; // S for Ship
+                            break;
+                        case "Hit":
+                            rowString += "X "; // X for Hit
+                            break;
+                        case "Miss":
+                            rowString += "M "; // M for Miss
+                            break;
+                        default:
+                            rowString += "- "; // - for Empty Cell
+                            break;
+                    }
+                }
+                console.log(rowString);
+            }
         }
 }
 

@@ -68,8 +68,8 @@ describe('GameBoard Class', () => {
         expect(gb.width).toBe(10);
     });
 
-    test('checkAt should return true for an empty cell', () => {
-        expect(gb.checkAt("A1")).toBeTruthy();
+    test.only('checkAt should return true for an empty cell', () => {
+        expect(gb.checkAt("J10")).toBeTruthy();
     });
 
     test('checkAt should be able to check if ship already exists on coordinate', () => {
@@ -144,7 +144,7 @@ describe('GameBoard Class', () => {
   
 });
 
-describe.only('Player Class', () => {
+describe('Player Class', () => {
 
     let computer;
     let getRandomIntSpy;
@@ -197,6 +197,7 @@ describe.only('Player Class', () => {
         // Once for the original call and once because of recursion.
         expect(easyAiMovesSpy).toHaveBeenCalledTimes(2);
         expect(result).toBe("B2");
+        expect(computer.completedMoves).toEqual(["A1", "B2"]);
 
         // Clean up the spy
         easyAiMovesSpy.mockRestore();
