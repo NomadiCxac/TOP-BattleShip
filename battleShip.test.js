@@ -1,5 +1,6 @@
 const Ship = require('./ship');  // Adjust path accordingly
 const Gameboard = require('./gameBoard');  // Adjust path accordingly
+const Player = require('./player')
 
 describe('Ship Class', () => {
 
@@ -50,7 +51,7 @@ describe('Ship Class', () => {
 
 });
 
-describe.only('GameBoard Class', () => {
+describe('GameBoard Class', () => {
 
     let gb;  // Declare gb outside to make it available for all tests.
 
@@ -140,10 +141,65 @@ describe.only('GameBoard Class', () => {
         gb.ship["Battleship"].instance.isDead = false;
         expect(gb.gameOver()).toBeFalsy();
     });
-
-
   
+});
+
+describe.only('Player Class', () => {
+
+    let computer;
+    let getRandomIntSpy;
+
+    beforeEach(() => {
+        computer = new Player ("computer");  // Re-initialize computer before each test
+        getRandomIntSpy = jest.spyOn(computer, 'getRandomInt');
+    });
+
+    afterEach(() => {
+        getRandomIntSpy.mockRestore(); // clean up the spy after each test
+    });
 
 
+    test('easyAiMoves returns a random "legal" coordinate', () => {
+        
+        expect(computer.Ai).toBeTruthy();
+        const coordinate = computer.easyAiMoves();
+    
+        // Check if first character is between A to I
+        const validColumns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+        expect(validColumns.includes(coordinate[0])).toBeTruthy();
+    
+        // Check if second character is between 1 to 10
+        const validRows = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+        const rowValue = coordinate.slice(1); // This will account for both single and double digit row values
+        expect(validRows.includes(rowValue)).toBeTruthy();
+    });
 
+
+    test('easyAiMoves returns a new coordinate if move has already been made', () => {
+        
+        expect(computer.Ai).toBeTruthy();
+        getRandomIntSpy
+            .mockReturnValueOnce(0)   // first call for column
+            .mockReturnValueOnce(1)   // first call for row
+            .mockReturnValueOnce(1)   // Second call for column
+            .mockReturnValueOnce(2);  // Second call for row
+
+        // Manually add A1 to completedMoves
+        computer.completedMoves.push('A1');
+
+        // Spy on the easyAiMoves method
+        const easyAiMovesSpy = jest.spyOn(computer, 'easyAiMoves');
+
+        // Call the method
+        const result = computer.easyAiMoves();;
+
+        // Check if easyAiMoves was called twice: 
+        // Once for the original call and once because of recursion.
+        expect(easyAiMovesSpy).toHaveBeenCalledTimes(2);
+        expect(result).toBe("B2");
+
+        // Clean up the spy
+        easyAiMovesSpy.mockRestore();
+    });
+  
 });
