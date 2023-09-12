@@ -12,6 +12,8 @@ class Game {
         this.currentTurn = "";
     }
 
+    // TO-DO promptUserCoordinate(), promptUserOrientation(), checkWinner();
+
     placePlayerShips(shipName) {
         while (player.gameBoard.ship[shipName].coordinates == "") {
             // Prompt User for shipHeadCoordinate
