@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
+  devtool: 'inline-source-map',
   entry: './battleship.js',  // replace with the path to your main JS file
   output: {
     filename: 'bundle.js',

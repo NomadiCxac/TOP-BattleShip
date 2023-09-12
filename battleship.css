@@ -130,14 +130,18 @@
     /* margin-bottom: 7em; */
 }
 
-.row {
+.row, .ship {
     display: flex;
     height: 10%;
     border: 1px solid black;
 }
 
+.ship {
+    margin-right: 1em;
+}
+
 .box {
-    width: 10%;
+    width: 50px;
     border: 1px solid black;
 }
 
@@ -156,3 +160,32 @@
     background: rgb(83, 180, 59);
     margin-bottom: 4em;
 }
+
+.piecesContainer {
+    display: flex;
+    flex-direction: column;
+    height: 350px;
+    width: 425px;
+    border: 1px solid black;
+}
+
+.shipContainer {
+    display: flex;
+    height: 50px;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1em;
+}
+
+.shipName {
+    font-size: x-large;
+    margin-left: 1em;
+}
+
+.shipbox {
+    border: 1px solid green;
+    background-color: rgba(0, 128, 0, 0.2); 
+    height: 100%;
+}
+
