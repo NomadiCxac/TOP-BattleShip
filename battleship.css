@@ -1,0 +1,158 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.gameContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    background: red;
+}
+
+.gameHeader {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    height: 15%;
+    background: rgb(47, 0, 255);
+}
+
+#battleshipTitle {
+    font-size: xx-large;
+    color: white;
+}
+
+.gameStateContainer {
+    display: flex;
+    width: 20%;
+    height: 70%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    font-size: x-large;
+    color: white;
+    border: 1px solid black;
+}
+
+.gameContentContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    height: 85%;
+    width: 100vw;
+    background: rgb(31, 147, 155);
+}
+
+.gameBoardHeaderContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 5%;
+    width: 100%;
+    background: rgb(83, 180, 59);
+    margin-top: 3em;
+}
+
+.gameBoardHeader {
+    font-size: x-large;
+}
+
+.gameScreenContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    height: 85%;
+    width: 100vw;
+    background: rgb(31, 147, 155);
+}
+
+.gameBoardContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+
+.gameBoardContainer.top {
+    display: flex;
+    flex-direction: row;
+    height: 5%;
+}
+
+
+.numericCoordinates {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 36px;
+    margin-top: 1em;
+    margin-left: 0.85em;
+}
+
+.numericCoordinates > div{
+    margin-left: 0.85em;
+}
+
+.gameBoardContainer.bottom {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: 90%;
+}
+
+.alphaCoordinates {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    font-size: 36px;
+    margin-right: 0.5em;
+    margin-bottom: 0.2em;
+}
+
+.alphaCoordinates > div {
+    margin-top: 0.25em;
+}
+
+.gameBoard {
+    display: flex;
+    flex-direction: column;
+    height: 500px;
+    width: 500px;
+    border: 1px solid black;
+    /* margin-bottom: 7em; */
+}
+
+.row {
+    display: flex;
+    height: 10%;
+    border: 1px solid black;
+}
+
+.box {
+    width: 10%;
+    border: 1px solid black;
+}
+
+.box:hover {
+    width: 10%;
+    border: 1px solid black;
+    background-color: lightgreen;
+}
+
+.gameBoardResultContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 5%;
+    width: 100%;
+    background: rgb(83, 180, 59);
+    margin-bottom: 4em;
+}

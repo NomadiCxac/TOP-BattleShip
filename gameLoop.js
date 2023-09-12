@@ -101,6 +101,16 @@ class Game {
         }
     }
 
+    checkWinner() {
+        if (player.gameBoard.gameOver()) {
+            return "Computer Wins"
+        }
+
+        if (computer.gameBoard.gameOver()) {
+            return "Player Wins"
+        }
+    }
+
 
 
     start() {
@@ -112,49 +122,51 @@ class Game {
     }
 }
 
-// Get player name
-let name = "player1"
+module.exports = Game;
 
-// Create players
-let player = new Player(name);
-let computer = new Player("computer");
+// // Get player name
+// let name = "player1"
 
-// Place ship phase - test on random coordinates
+// // Create players
+// let player = new Player(name);
+// let computer = new Player("computer");
 
-    // "Carrier"
-    player.gameBoard.placeShip("Carrier", "E5", "Horizontal")
-    computer.gameBoard.placeShip("Carrier", "A1", "Horizontal")
+// // Place ship phase - test on random coordinates
 
-    // "Battleship"
-    player.gameBoard.placeShip("Battleship", "J7", "Horizontal")
-    computer.gameBoard.placeShip("Battleship", "B10", "Vertical")
+//     // "Carrier"
+//     player.gameBoard.placeShip("Carrier", "E5", "Horizontal")
+//     computer.gameBoard.placeShip("Carrier", "A1", "Horizontal")
 
-    // "Cruiser"
-    player.gameBoard.placeShip("Cruiser", "A8", "Horizontal")
-    computer.gameBoard.placeShip("Cruiser", "F1", "Horizontal")
+//     // "Battleship"
+//     player.gameBoard.placeShip("Battleship", "J7", "Horizontal")
+//     computer.gameBoard.placeShip("Battleship", "B10", "Vertical")
 
-    // "Submarine"
-    player.gameBoard.placeShip("Submarine", "D1", "Horizontal")
-    computer.gameBoard.placeShip("Submarine", "H10", "Vertical")
+//     // "Cruiser"
+//     player.gameBoard.placeShip("Cruiser", "A8", "Horizontal")
+//     computer.gameBoard.placeShip("Cruiser", "F1", "Horizontal")
 
-    // "Destroyer"
-    player.gameBoard.placeShip("Destroyer", "B2", "Horizontal")
-    computer.gameBoard.placeShip("Destroyer", "J1", "Horizontal")
+//     // "Submarine"
+//     player.gameBoard.placeShip("Submarine", "D1", "Horizontal")
+//     computer.gameBoard.placeShip("Submarine", "H10", "Vertical")
 
-    // player.gameBoard.display();
-    computer.gameBoard.display();
+//     // "Destroyer"
+//     player.gameBoard.placeShip("Destroyer", "B2", "Horizontal")
+//     computer.gameBoard.placeShip("Destroyer", "J1", "Horizontal")
 
-// Attack phase 
+//     // player.gameBoard.display();
+//     computer.gameBoard.display();
 
-    // Player attack phase
-    let playerMove = player.makeAttack("A1")
-    computer.gameBoard.receiveAttack(playerMove);
+// // Attack phase 
 
-    computer.gameBoard.display();
+//     // Player attack phase
+//     let playerMove = player.makeAttack("A1")
+//     computer.gameBoard.receiveAttack(playerMove);
 
-    // Computer attack phase
-    let computerChoice = computer.easyAiMoves()
-    let computerMove = computer.makeAttack(computerChoice)
-    player.gameBoard.receiveAttack(computerMove);
+//     computer.gameBoard.display();
 
-    player.gameBoard.display();
+//     // Computer attack phase
+//     let computerChoice = computer.easyAiMoves()
+//     let computerMove = computer.makeAttack(computerChoice)
+//     player.gameBoard.receiveAttack(computerMove);
+
+//     player.gameBoard.display();
