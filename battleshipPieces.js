@@ -25,6 +25,9 @@ function battleshipPieces (player) {
         shipPiece.style.width = (boxWidth * shipAttribute.length) + "px";
         shipPiece.style.height = (boxHeight) + "px";
         shipPiece.draggable = true;
+        shipPiece.addEventListener('dragstart', function(event) {
+            event.dataTransfer.setData("text", event.target.id);
+        });
     
         for (let i = 0; i < shipAttribute.length; i++) {
             let shipBox = document.createElement("div");

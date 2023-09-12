@@ -3,7 +3,8 @@ const Gameboard = require('./gameBoard');  // Adjust path accordingly
 const Player = require('./player');
 const Game = require('./gameLoop');
 const createGameBoard =  require('./createGameBoard');
-const piecesContainer = require('./battleshipPieces')
+const piecesContainer = require('./battleshipPieces');
+const createNavUi = require('./navigationComponents');
 import './battleship.css';
 
 // String to generate game ID
@@ -16,9 +17,7 @@ function generateRandomString() {
     return result;
 }
 
-// function getName() {
-
-// }
+let gameInit = createNavUi();
 
 let player1 = new Player;
 
@@ -30,6 +29,9 @@ let board1 = createGameBoard(newGame.player1);
 let pieces = piecesContainer(player1);
 let board2 = createGameBoard(newGame.computer);
 
+
 gameScreen.appendChild(pieces);
 gameScreen.appendChild(board1);
+gameScreen.appendChild(gameInit);
 // gameScreen.appendChild(board2);
+

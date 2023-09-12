@@ -47,6 +47,23 @@ function createGameBoard(player) {
         let box = document.createElement("div");
             box.className = "box";
             box.id = alphaChar + j
+            box.addEventListener('dragover', function(event) {
+                event.preventDefault();
+            });
+            
+            box.addEventListener('drop', function(event) {
+                event.preventDefault();
+            
+                let data = event.dataTransfer.getData("text");
+                let droppedShip = document.getElementById(data);
+                
+                if(canPlaceShip(droppedShip, box)) { // Assuming you have a function to check if the ship can be placed.
+                    box.appendChild(droppedShip);
+                    // Any additional logic for updating your game state goes here
+                } else {
+                    alert("Cannot place the ship here!");
+                }
+            });
             row.appendChild(box);
         }
 
