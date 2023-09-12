@@ -32,35 +32,40 @@ class Player {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    generateRandomMove() {
-        let columnNumber = this.getRandomInt(0, this.gameBoard.width - 1);
-        let rowNumber = this.getRandomInt(1, this.gameBoard.height);
-        let columnAlias = String.fromCharCode(columnNumber + 65);
-    
-        return columnAlias + rowNumber;
+
+    getAllPossibleMoves() {
+        let allMoves = [];
+        for (let columnNumber = 0; columnNumber < this.gameBoard.width; columnNumber++) {
+            for (let rowNumber = 1; rowNumber <= this.gameBoard.height; rowNumber++) {
+                let columnAlias = String.fromCharCode(columnNumber + 65);
+                allMoves.push(columnAlias + rowNumber);
+            }
+        }
+        return allMoves;
     }
 
     easyAiMoves() {
+
         if (!this.Ai) {
             throw new Error("Access to easyAiMoves is restricted.");
         }
     
-        let retryCount = 0; 
-        const MAX_RETRIES = this.gameBoard.width ** this.gameBoard.height; // maximum number of retries before giving up
-    
-        let move = this.generateRandomMove();
-    
-        while (this.completedMoves.includes(move)) {
-            if (retryCount >= MAX_RETRIES) {
-                throw new Error("Maximum retries reached. Unable to find a unique move.");
+            // Get the set of all unplayed moves
+            let allPossibleMoves = this.getAllPossibleMoves();
+            let unplayedMoves = allPossibleMoves.filter(move => !this.completedMoves.includes(move));
+
+            // If there are no unplayed moves left, raise an error or handle accordingly
+            if (unplayedMoves.length === 0) {
+                throw new Error("All moves have been played.");
             }
-            move = this.generateRandomMove();
-            retryCount++;
-        }
-    
-        this.completedMoves.push(move);
-    
-        return move;
+
+            // Randomly select a move from the set of unplayed moves
+            let randomIndex = this.getRandomInt(0, unplayedMoves.length - 1);
+            let move = unplayedMoves[randomIndex];
+
+            this.completedMoves.push(move);
+
+            return move;
     }
 
     aiShipOrientation() {
