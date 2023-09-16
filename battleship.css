@@ -1,6 +1,7 @@
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 .gameContainer {
@@ -71,6 +72,29 @@
     background: rgb(31, 147, 155);
 }
 
+.gameScreen-Left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    height: 100%;
+    width: 20%;
+    background: rgb(31, 147, 155);
+}
+
+
+.shipPositionSwitcher {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    height: 10%;
+    width: 80%;
+    color: white;
+    background: rgb(22, 39, 189);
+    margin-bottom: 1.5em;
+}
+
 .gameBoardContainer {
     display: flex;
     flex-direction: column;
@@ -138,17 +162,24 @@
 
 .ship {
     margin-right: 1em;
+    box-sizing: border-box;
+    position: relative;
 }
 
 .box {
     width: 50px;
     border: 1px solid black;
+    box-sizing: border-box;
 }
 
 .box:hover {
     width: 10%;
     border: 1px solid black;
     background-color: lightgreen;
+}
+
+.highlight {
+    background-color: rgba(0, 0, 0, 0.2); /* Semi-transparent black. Adjust as needed. */
 }
 
 .gameBoardResultContainer {
@@ -167,6 +198,7 @@
     height: 350px;
     width: 425px;
     border: 2px solid black;
+    margin-top: 1.5em;
 }
 
 .shipContainer {
@@ -231,4 +263,38 @@
     color: white;
     font-weight: 700;
     font-size: larger;
+}
+
+.verticalPiecesContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    height: 350px;
+    width: 425px;
+    border: 2px solid black;
+    margin-top: 1.5em;
+}
+
+.verticalShip {
+    display: flex;
+    flex-direction: column;  /* this stacks the ship boxes vertically */
+}
+
+.verticalShipName {
+    font-size: 16px;
+    margin-bottom: 1em;
+}
+
+
+.verticalShipContainer {
+    display: flex;
+    flex-direction: column;  /* this stacks the ship boxes vertically */
+    align-items: center;
+}
+
+.shipbox, .verticalShipbox { 
+    height: 48px;  /* adjust this as per your design */
+    width: 50px;
+    border: 1px solid #000; /* for visualization */
+    box-sizing: border-box; /* to ensure border doesn't add to width/height */
 }

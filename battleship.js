@@ -2,8 +2,8 @@ const Ship = require('./ship');  // Adjust path accordingly
 const Gameboard = require('./gameBoard');  // Adjust path accordingly
 const Player = require('./player');
 const Game = require('./gameLoop');
+const {battleshipPieces} = require('./battleshipPieces');
 const createGameBoard =  require('./createGameBoard');
-const piecesContainer = require('./battleshipPieces');
 const createNavUi = require('./navigationComponents');
 import './battleship.css';
 
@@ -17,6 +17,84 @@ function generateRandomString() {
     return result;
 }
 
+function createVerticalPiecesContainer(player) {
+  let piecesContainer = document.createElement("div");
+  piecesContainer.className = "verticalPiecesContainer";
+  let boxWidth = 50;
+  let boxHeight = 48;
+
+  for (let shipName in player.gameBoard.ship) {
+      let shipAttribute = player.gameBoard.ship[shipName].instance;
+      
+      let shipContainer = document.createElement("div");
+      shipContainer.className = "verticalShipContainer";
+
+      let shipTitle = document.createElement("div");
+      shipTitle.className = "verticalShipName";
+      shipTitle.textContent = shipAttribute.name + ":";
+
+      let shipPiece = document.createElement("div");
+      shipPiece.classList.add("verticalDraggable");
+      shipPiece.classList.add("verticalShip");
+      shipPiece.id = "vertical" + shipAttribute.name;
+      shipPiece.style.width = boxWidth + "px";
+      shipPiece.style.height = (boxHeight * shipAttribute.length) + "px";
+
+      
+      shipPiece.draggable = true;
+      shipPiece.addEventListener('dragstart', function(event) {
+          const clickedBoxOffset = event.target.getAttribute("data-offset");
+          const shipData = {
+              name: shipAttribute.name,
+              length: shipAttribute.length,
+              offset: clickedBoxOffset  // This tells us how far from the head the user clicked
+          };
+      
+          dragData.draggedShip = shipData; // store the data
+          event.dataTransfer.setData('application/json', JSON.stringify(shipData));
+      
+          // get the shipHead's bounding rectangle
+          const shipHeadRect = document.getElementById("shipHead" + shipAttribute.name).getBoundingClientRect();
+          const shipPieceRect = shipPiece.getBoundingClientRect();
+      
+          // calculate the offset
+          const offsetX = shipHeadRect.left - shipPieceRect.left + (shipHeadRect.width / 2);;
+          const offsetY = shipHeadRect.top - shipPieceRect.top + (shipHeadRect.height / 2);
+      
+          // adjust the drag image's starting position
+          event.dataTransfer.setDragImage(shipPiece, offsetX, offsetY);
+      });
+      
+      for (let i = 0; i < shipAttribute.length; i++) {
+
+          let shipBox = document.createElement("div");
+          shipBox.className = "shipbox";
+          shipBox.style.width =  boxWidth + "px";
+
+          shipBox.addEventListener('mousedown', function(event) {
+              console.log("Element clicked:", event.target);
+              shipPiece.setAttribute("data-offset", 0); // set the offset on the shipPiece when a shipBox is clicked
+          });
+
+          if (i == 0) { 
+              shipBox.id = "shipHead" + shipAttribute.name;  // Make it unique
+          } else {
+              shipBox.id = shipAttribute.name + "-" + i;  // Make it unique
+          }
+
+          shipPiece.appendChild(shipBox);
+      }
+
+      shipContainer.appendChild(shipTitle);
+      shipContainer.appendChild(shipPiece);
+      piecesContainer.appendChild(shipContainer);
+
+  }
+  return piecesContainer;
+}
+
+
+
 let gameInit = createNavUi();
 
 let player1 = new Player;
@@ -25,13 +103,39 @@ let newGame = new Game(generateRandomString(), player1)
 
 let gameScreen = document.querySelector(".gameScreenContainer");
 
+let leftGameScreen = document.createElement("div");
+leftGameScreen.className="gameScreen-Left"
+
+let shipPositionSwitcher = document.createElement("button");
+shipPositionSwitcher.className ="shipPositionSwitcher";
+shipPositionSwitcher.innerText = "Switch Orientation"
+
+
+gameScreen.appendChild(leftGameScreen);
+
 let board1 = createGameBoard(newGame.player1);
-let pieces = piecesContainer(player1);
+let pieces = battleshipPieces(player1);
 let board2 = createGameBoard(newGame.computer);
 
+let verticalPieces = createVerticalPiecesContainer(player1);
 
-gameScreen.appendChild(pieces);
+// leftGameScreen.appendChild(pieces);
+leftGameScreen.appendChild(verticalPieces);
+leftGameScreen.appendChild(shipPositionSwitcher);
 gameScreen.appendChild(board1);
 gameScreen.appendChild(gameInit);
 // gameScreen.appendChild(board2);
 
+function allowDrop(ev) {
+    ev.preventDefault();
+  }
+  
+  function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+  }
+  
+  function drop(ev) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    ev.target.appendChild(document.getElementById(data));
+  }
