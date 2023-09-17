@@ -108,40 +108,45 @@ leftGameScreen.className="gameScreen-Left"
 
 let currentShipOrientation = document.createElement("div");
 currentShipOrientation.className = "currentShipOrientation";
-currentShipOrientation.innerText = "Current Ship Position is: Horizontal"
+currentShipOrientation.dataset.shipOrientation = "Horizontal"
+currentShipOrientation.innerText = `Current Ship Position is: ${currentShipOrientation.dataset.shipOrientation}`
+gameScreen.appendChild(leftGameScreen);
+let pieces = battleshipPieces(player1);
+leftGameScreen.appendChild(pieces);
 
 
 let shipPositionSwitcher = document.createElement("button");
 shipPositionSwitcher.className ="shipPositionSwitcher";
 shipPositionSwitcher.innerText = "Switch Orientation"
+shipPositionSwitcher.addEventListener("click", function(){
+    let shipOrientation = document.querySelector(".currentShipOrientation");
+
+    if (shipOrientation.dataset.shipOrientation == "Horizontal") {
+        shipOrientation.dataset.shipOrientation = "Vertical";
+        leftGameScreen.removeChild(pieces);
+        leftGameScreen.insertBefore(verticalPieces, leftGameScreen.firstChild);
+    } else {
+        shipOrientation.dataset.shipOrientation = "Horizontal";
+        leftGameScreen.removeChild(verticalPieces);
+        leftGameScreen.insertBefore(pieces, leftGameScreen.firstChild);
+    }
+
+    shipOrientation.innerText = `Current Ship Position is: ${currentShipOrientation.dataset.shipOrientation}`
+})
 
 
-gameScreen.appendChild(leftGameScreen);
 
-let board1 = createGameBoard(newGame.player1);
-let pieces = battleshipPieces(player1);
+
+let board1 = createGameBoard(newGame.player1, currentShipOrientation.dataset.shipOrientation);
+
 let board2 = createGameBoard(newGame.computer);
 
 let verticalPieces = createVerticalPiecesContainer(player1);
 
-// leftGameScreen.appendChild(pieces);
-leftGameScreen.appendChild(verticalPieces);
+leftGameScreen.appendChild(pieces);
+// leftGameScreen.appendChild(verticalPieces);
 leftGameScreen.appendChild(currentShipOrientation);
 leftGameScreen.appendChild(shipPositionSwitcher);
 gameScreen.appendChild(board1);
 gameScreen.appendChild(gameInit);
 // gameScreen.appendChild(board2);
-
-function allowDrop(ev) {
-    ev.preventDefault();
-  }
-  
-  function drag(ev) {
-    ev.dataTransfer.setData("text", ev.target.id);
-  }
-  
-  function drop(ev) {
-    ev.preventDefault();
-    var data = ev.dataTransfer.getData("text");
-    ev.target.appendChild(document.getElementById(data));
-  }

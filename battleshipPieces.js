@@ -1,7 +1,5 @@
 const Player = require('./player');
 
-let dragStartX = 0;
-let shipHeadOffsetX = 0;
 let dragData = {
     draggedShip: null
   };
@@ -85,14 +83,5 @@ function battleshipPieces (player) {
     return piecesContainer;
 }
 
-// Use the simulateClickOnDiv function I previously provided:
-function simulateClickOnDiv(element, x, y) {
-    const mouseEventInit = {
-        bubbles: true,
-        clientX: x,
-        clientY: y
-    };
-    const clickEvent = new MouseEvent('click', mouseEventInit);
-    element.dispatchEvent(clickEvent);
-}
-module.exports = {battleshipPieces, dragStartX, shipHeadOffsetX, dragData };
+
+module.exports = {battleshipPieces, dragData };

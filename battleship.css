@@ -191,6 +191,10 @@
     background-color: rgba(0, 0, 0, 0.2); /* Semi-transparent black. Adjust as needed. */
 }
 
+.placed {
+    background-color: rgba(20, 61, 173, 0.4); /* Semi-transparent black. Adjust as needed. */
+}
+
 .gameBoardResultContainer {
     display: flex;
     align-items: center;

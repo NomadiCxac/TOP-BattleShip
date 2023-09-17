@@ -87,14 +87,15 @@ function createGameBoard(player) {
                 event.preventDefault();
             });
 
-            box.addEventListener('dragenter', function(event) {
+            box.addEventListener('dragenter', function() {
                 setTimeout(() => {
 
                     const shipData = dragData.draggedShip;
                     previousAffectedBoxes = [...affectedBoxes]; // make a shallow copy   
-                   
-            
-                    console.log(shipData);
+                    let shipOrientationElement = document.querySelector("div[data-ship-orientation]");
+                    let shipOrientation = shipOrientationElement.dataset.shipOrientation;
+                    console.log(shipOrientation);
+
             
                     if (!shipData) {
                         console.error("Ship data is null!");
@@ -106,7 +107,7 @@ function createGameBoard(player) {
                         box.id, 
                         shipData.length, 
                         shipData.offset, 
-                        "Horizontal",
+                        shipOrientation,
                         player
                     );
             
@@ -114,7 +115,7 @@ function createGameBoard(player) {
                         affectedBoxes = getAffectedBoxes(
                             box.id, 
                             shipData.length, 
-                            "Horizontal"
+                            shipOrientation
                         );
             
                         
@@ -141,6 +142,9 @@ function createGameBoard(player) {
 
             box.addEventListener('drop', function(event) {
                 event.preventDefault();
+
+                let shipOrientationElement = document.querySelector("div[data-ship-orientation]");
+                let shipOrientation = shipOrientationElement.dataset.shipOrientation;
             
                 const shipData = JSON.parse(event.dataTransfer.getData('application/json'));
             
@@ -161,11 +165,18 @@ function createGameBoard(player) {
                     console.error("Invalid ship placement: Out of bounds.");
                     box.classList.remove('highlight');
                     return;
-                }
-            
+                } 
+
                 const adjustedTargetPosition = charPart + adjustedNumPart;  // The new position for the head of the ship
-            
+
+                let affectedBoxes = getAffectedBoxes(adjustedTargetPosition, shipData.length, shipOrientation)
+                affectedBoxes.forEach(box => {
+                    box.classList.remove('highlight');
+                    box.classList.add('placed');
+                });
+
                 console.log(`Attempting to place ${shipData.name} with length ${shipData.length} at position ${adjustedTargetPosition}.`);
+            
             
                 // Place your ship based on adjustedTargetPosition as the head's position, using your existing logic or methods
                 // For example: player.gameBoard.placeShip(shipData.name, adjustedTargetPosition, shipOrientation);
