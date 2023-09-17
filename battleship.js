@@ -106,6 +106,11 @@ let gameScreen = document.querySelector(".gameScreenContainer");
 let leftGameScreen = document.createElement("div");
 leftGameScreen.className="gameScreen-Left"
 
+let currentShipOrientation = document.createElement("div");
+currentShipOrientation.className = "currentShipOrientation";
+currentShipOrientation.innerText = "Current Ship Position is: Horizontal"
+
+
 let shipPositionSwitcher = document.createElement("button");
 shipPositionSwitcher.className ="shipPositionSwitcher";
 shipPositionSwitcher.innerText = "Switch Orientation"
@@ -121,6 +126,7 @@ let verticalPieces = createVerticalPiecesContainer(player1);
 
 // leftGameScreen.appendChild(pieces);
 leftGameScreen.appendChild(verticalPieces);
+leftGameScreen.appendChild(currentShipOrientation);
 leftGameScreen.appendChild(shipPositionSwitcher);
 gameScreen.appendChild(board1);
 gameScreen.appendChild(gameInit);

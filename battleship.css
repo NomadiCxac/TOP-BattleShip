@@ -82,6 +82,15 @@
     background: rgb(31, 147, 155);
 }
 
+.currentShipOrientation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid black;
+    height: 10%;
+    width: 80%;
+}
+
 
 .shipPositionSwitcher {
     display: flex;
@@ -198,7 +207,7 @@
     height: 350px;
     width: 425px;
     border: 2px solid black;
-    margin-top: 1.5em;
+    margin-top: 3.5em;
 }
 
 .shipContainer {
@@ -272,7 +281,7 @@
     height: 350px;
     width: 425px;
     border: 2px solid black;
-    margin-top: 1.5em;
+    margin-top: 3.5em;
 }
 
 .verticalShip {
