@@ -288,7 +288,7 @@
     margin-top: 3.5em;
 }
 
-.verticalShip {
+.verticalDraggable {
     display: flex;
     flex-direction: column;  /* this stacks the ship boxes vertically */
 }

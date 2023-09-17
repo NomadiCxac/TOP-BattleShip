@@ -18,6 +18,12 @@ function generateRandomString() {
 }
 
 function createVerticalPiecesContainer(player) {
+
+    
+    let currentShipOrientation = document.createElement("div");
+    currentShipOrientation.className = "currentShipOrientation";
+    currentShipOrientation.dataset.shipOrientation = "Horizontal"
+
   let piecesContainer = document.createElement("div");
   piecesContainer.className = "verticalPiecesContainer";
   let boxWidth = 50;
@@ -98,7 +104,6 @@ function createVerticalPiecesContainer(player) {
 let gameInit = createNavUi();
 
 let player1 = new Player;
-
 let newGame = new Game(generateRandomString(), player1)
 
 let gameScreen = document.querySelector(".gameScreenContainer");
@@ -111,7 +116,9 @@ currentShipOrientation.className = "currentShipOrientation";
 currentShipOrientation.dataset.shipOrientation = "Horizontal"
 currentShipOrientation.innerText = `Current Ship Position is: ${currentShipOrientation.dataset.shipOrientation}`
 gameScreen.appendChild(leftGameScreen);
-let pieces = battleshipPieces(player1);
+
+let pieces = battleshipPieces(player1, "Horizontal");
+let verticalPieces = battleshipPieces(player1, "Vertical");
 leftGameScreen.appendChild(pieces);
 
 
@@ -141,7 +148,6 @@ let board1 = createGameBoard(newGame.player1, currentShipOrientation.dataset.shi
 
 let board2 = createGameBoard(newGame.computer);
 
-let verticalPieces = createVerticalPiecesContainer(player1);
 
 leftGameScreen.appendChild(pieces);
 // leftGameScreen.appendChild(verticalPieces);

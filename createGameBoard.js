@@ -33,6 +33,7 @@ function isValidPlacement(boxId, length, offset, orientation, player) {
 }
 
 function createGameBoard(player) {
+    
 
     // Generate div elements for Game Board
     let gameBoardComponent = document.createElement("div");
@@ -145,6 +146,8 @@ function createGameBoard(player) {
 
                 let shipOrientationElement = document.querySelector("div[data-ship-orientation]");
                 let shipOrientation = shipOrientationElement.dataset.shipOrientation;
+                let lowerLetterBound = 65;
+                let upperLetterBound = 74;
             
                 const shipData = JSON.parse(event.dataTransfer.getData('application/json'));
             
@@ -156,12 +159,20 @@ function createGameBoard(player) {
                 const adjustedNumPart = numPart - shipData.offset;
                 console.log(shipData.offset);
                 console.log(adjustedNumPart);
+                let selectedChar = charPart.charCodeAt();
                 const rawData = event.dataTransfer.getData('application/json');
                 console.log("Dropped data:", rawData);
 
+                console.log(selectedChar + shipData.length);
             
                 // Check if the placement is out of bounds
-                if (adjustedNumPart <= 0 || adjustedNumPart + shipData.length - 1 > player.gameBoard.width) {
+                if (shipOrientation == "Horizontal" && (adjustedNumPart <= 0 || adjustedNumPart + shipData.length - 1 > player.gameBoard.width)) {
+                    console.error("Invalid ship placement: Out of bounds.");
+                    box.classList.remove('highlight');
+                    return;
+                } 
+
+                if (shipOrientation == "Vertical" && (selectedChar + shipData.length < lowerLetterBound || selectedChar + shipData.length - 1 > upperLetterBound)) {
                     console.error("Invalid ship placement: Out of bounds.");
                     box.classList.remove('highlight');
                     return;
