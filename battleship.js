@@ -2,11 +2,12 @@
 const Game = require('./gameLoop');
 const {battleshipPieces} = require('./battleshipPieces');
 const createGameBoard =  require('./createGameBoard');
-const createNavUi = require('./navigationComponents');
+const createGameStartElement = require('./createStartButton');
 const createShipPositionSwitcher = require("./positionSwitcher")
+const phaseUpdater = require('./updateCurrentPhase');
 import './battleship.css';
 
-// String to generate game ID
+
 function generateRandomString() {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';
@@ -17,9 +18,14 @@ function generateRandomString() {
 }
 
 
-let gameInit = createNavUi();
+let playerName = localStorage.getItem('playerName');
+let currentGame = new Game (generateRandomString(), playerName)
+currentGame.currentState = "Game Set-Up";
+let currentPlayer = currentGame.player1;
 
-let newGame = new Game(generateRandomString(), "user")
+phaseUpdater(currentGame);
+
+let gameStart = createGameStartElement(currentGame);
 
 let gameScreen = document.querySelector(".gameScreenContainer");
 
@@ -32,15 +38,15 @@ currentShipOrientation.dataset.shipOrientation = "Horizontal"
 currentShipOrientation.innerText = `Current Ship Position is: ${currentShipOrientation.dataset.shipOrientation}`
 gameScreen.appendChild(leftGameScreen);
 
-let pieces = battleshipPieces(newGame.player1, "Horizontal");
+let pieces = battleshipPieces(currentPlayer, "Horizontal");
 leftGameScreen.appendChild(pieces);
 
 
-let shipPositionSwitcher = createShipPositionSwitcher(newGame.player1);
+let shipPositionSwitcher = createShipPositionSwitcher(currentPlayer);
 
-let board1 = createGameBoard(newGame.player1, currentShipOrientation.dataset.shipOrientation);
+let board1 = createGameBoard(currentPlayer, currentShipOrientation.dataset.shipOrientation);
 
-let board2 = createGameBoard(newGame.computer);
+let board2 = createGameBoard(currentGame.computer);
 
 
 leftGameScreen.appendChild(pieces);
@@ -48,6 +54,6 @@ leftGameScreen.appendChild(pieces);
 leftGameScreen.appendChild(currentShipOrientation);
 leftGameScreen.appendChild(shipPositionSwitcher);
 gameScreen.appendChild(board1);
-gameScreen.appendChild(gameInit);
+gameScreen.appendChild(gameStart);
 // gameScreen.appendChild(board2);
 

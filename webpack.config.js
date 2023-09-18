@@ -5,7 +5,7 @@ module.exports = {
   devtool: 'inline-source-map',
   entry: {
     battleship:'./battleship.js', 
-    initialize:'./initialize-game.js',
+    initializeGame:'./initializeGame.js',
 
   }, // replace with the path to your main JS file
   output: {

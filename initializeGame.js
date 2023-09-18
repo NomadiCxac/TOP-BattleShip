@@ -1,14 +1,14 @@
-const Ship = require('./ship');  // Adjust path accordingly
-const Gameboard = require('./gameBoard');  // Adjust path accordingly
-const Player = require('./player');
+
 const Game = require('./gameLoop');
+const createNavUi = require('./navigationComponents');
 const createGameBoard =  require('./createGameBoard');
-import './battleship.css';
+const phaseUpdater = require('./updateCurrentPhase');
+require('./battleship.css');
 
-let player1 = new Player("player1")
+localStorage.clear()
 
+phaseUpdater(null);
 let gameScreen = document.querySelector(".gameScreenContainer");
+let gameInitComponent = createNavUi("gameInitializer");
+gameScreen.appendChild(gameInitComponent);
 
-let board1 = createGameBoard(player1);
-
-gameScreen.appendChild(board1);

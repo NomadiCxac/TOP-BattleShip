@@ -212,7 +212,7 @@ function createGameBoard(player) {
                 // Append the new div to the parent element
                 parentElement.appendChild(placedDiv);
                 parentElement.style.justifyContent = "flex-start";
-                let shipObjectName = shipData.name;
+                // let shipObjectName = shipData.name;
 
                
             });
