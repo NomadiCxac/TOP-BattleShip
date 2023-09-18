@@ -5,6 +5,7 @@ const createGameBoard =  require('./createGameBoard');
 const createGameStartElement = require('./createStartButton');
 const createShipPositionSwitcher = require("./positionSwitcher")
 const phaseUpdater = require('./updateCurrentPhase');
+const placePiecesOnComputerBoardFrontEnd = require('./placePiecesOnComputerBoardFrontEnd')
 import './battleship.css';
 
 
@@ -46,14 +47,22 @@ let shipPositionSwitcher = createShipPositionSwitcher(currentPlayer);
 
 let board1 = createGameBoard(currentPlayer, currentShipOrientation.dataset.shipOrientation);
 
+let computer = currentGame.computer;
+computer.placeAllShipsForAI()
+
+console.log(computer.gameBoard.ship)
+console.log(computer.gameBoard.ship["Carrier"].coordinates)
+
 let board2 = createGameBoard(currentGame.computer);
 
 
+
+
 leftGameScreen.appendChild(pieces);
-// leftGameScreen.appendChild(verticalPieces);
 leftGameScreen.appendChild(currentShipOrientation);
 leftGameScreen.appendChild(shipPositionSwitcher);
 gameScreen.appendChild(board1);
-gameScreen.appendChild(gameStart);
-// gameScreen.appendChild(board2);
+// gameScreen.appendChild(gameStart);
+gameScreen.appendChild(board2);
+placePiecesOnComputerBoardFrontEnd(computer)
 
