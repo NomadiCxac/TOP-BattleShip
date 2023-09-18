@@ -1,6 +1,4 @@
-const Ship = require('./ship');  // Adjust path accordingly
-const Gameboard = require('./gameBoard');  // Adjust path accordingly
-const Player = require('./player');
+
 const Game = require('./gameLoop');
 const {battleshipPieces} = require('./battleshipPieces');
 const createGameBoard =  require('./createGameBoard');

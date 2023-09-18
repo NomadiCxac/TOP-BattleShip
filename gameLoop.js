@@ -14,17 +14,20 @@ class Game {
 
     // TO-DO promptUserCoordinate(), promptUserOrientation(), checkWinner();
 
-    placePlayerShips(shipName) {
-        while (player.gameBoard.ship[shipName].coordinates == "") {
-            // Prompt User for shipHeadCoordinate
-            let userCoordinate = promptUserCoordinate();
-            let userShipOrientation = promptUserOrientation();
+    checkPlayerReadyGameState() {
 
-            while (!player.gameBoard.placeShip(shipName, userCoordinate, userShipOrientation)) {
-                userCoordinate = promptUserCoordinate();
-                userShipOrientation = promptUserOrientation();
-            }
+        if (this.currentState != "Game Set-Up") {
+           return false;
         }
+
+        // console.log(this.player1.gameBoard.ship);
+        for (let shipTypes in this.player1.gameBoard.ship) {
+             if (this.player1.gameBoard.ship[shipTypes].coordinates.length == 0) {
+                return false;
+             } 
+        }
+
+        return true;
     }
 
     placeComputerShip(shipName) {
@@ -128,7 +131,10 @@ module.exports = Game;
 // let name = "player1"
 
 // // Create players
-// let player = new Player(name);
+let game = new Game(null, "player")
+
+console.log(game.checkPlayerReadyGameState())
+
 // let computer = new Player("computer");
 
 // // Place ship phase - test on random coordinates

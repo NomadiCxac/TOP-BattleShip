@@ -1,6 +1,7 @@
 const Ship = require('./ship');  // Adjust path accordingly
 const Gameboard = require('./gameBoard');  // Adjust path accordingly
 const Player = require('./player')
+const Game = require('./gameLoop')
 
 describe('Ship Class', () => {
 
@@ -68,7 +69,7 @@ describe('GameBoard Class', () => {
         expect(gb.width).toBe(10);
     });
 
-    test.only('checkAt should return true for an empty cell', () => {
+    test('checkAt should return true for an empty cell', () => {
         expect(gb.checkAt("J10")).toBeTruthy();
     });
 
@@ -204,3 +205,60 @@ describe('Player Class', () => {
     });
   
 });
+
+describe.only('gameLoop functions', () => {
+
+    let testGame;
+
+    beforeEach(() => {
+        testGame = new Game("test", "player")
+    });
+
+
+    test('checkPlayerReadyGameState() returns false if current game state does not equal: "Game Set-Up"', () => {
+        
+        testGame.currentState = "Player Move"
+        expect(testGame.checkPlayerReadyGameState()).toBeFalsy();
+    });
+
+    test('checkPlayerReadyGameState() returns false if one ship coordinate is missing', () => {
+        
+        testGame.currentState = "Game Set-Up"
+
+        testGame.player1.gameBoard.ship["Carrier"].coordinates = ["A1", "A2", "A3", "A4", "A5"];
+        testGame.player1.gameBoard.ship["Battleship"].coordinates = ["B1", "B2", "B3", "B4"];
+        testGame.player1.gameBoard.ship["Submarine"].coordinates = ["D1", "D2", "D3"];
+        testGame.player1.gameBoard.ship["Destroyer"].coordinates = ["E1", "E2"];
+
+        expect(testGame.checkPlayerReadyGameState()).toBeFalsy();
+    });
+
+    test('checkPlayerReadyGameState() returns false if all coordinates are correct, but somehow gamestate is not in set up stage', () => {
+        
+        testGame.currentState = "Player Move"
+
+        testGame.player1.gameBoard.ship["Carrier"].coordinates = ["A1", "A2", "A3", "A4", "A5"];
+        testGame.player1.gameBoard.ship["Battleship"].coordinates = ["B1", "B2", "B3", "B4"];
+        testGame.player1.gameBoard.ship["Cruiser"].coordinates = ["C1", "C2", "C3"];
+        testGame.player1.gameBoard.ship["Submarine"].coordinates = ["D1", "D2", "D3"];
+        testGame.player1.gameBoard.ship["Destroyer"].coordinates = ["E1", "E2"];
+
+        expect(testGame.checkPlayerReadyGameState()).toBeFalsy();
+    });
+
+  
+    test('checkPlayerReadyGameState() returns true in the happy path case', () => {
+        
+        testGame.currentState = "Game Set-Up"
+
+        testGame.player1.gameBoard.ship["Carrier"].coordinates = ["A1", "A2", "A3", "A4", "A5"];
+        testGame.player1.gameBoard.ship["Battleship"].coordinates = ["B1", "B2", "B3", "B4"];
+        testGame.player1.gameBoard.ship["Cruiser"].coordinates = ["C1", "C2", "C3"];
+        testGame.player1.gameBoard.ship["Submarine"].coordinates = ["D1", "D2", "D3"];
+        testGame.player1.gameBoard.ship["Destroyer"].coordinates = ["E1", "E2"];
+
+        expect(testGame.checkPlayerReadyGameState()).toBeTruthy();
+    });
+  
+});
+
