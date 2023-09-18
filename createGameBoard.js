@@ -32,6 +32,12 @@ function isValidPlacement(boxId, length, offset, orientation, player) {
     }
 }
 
+function getCurrentShipOrientation() {
+    let shipOrientationElement = document.querySelector("div[data-ship-orientation]");
+    return shipOrientationElement ? shipOrientationElement.dataset.shipOrientation : "Horizontal";
+}
+
+
 function createGameBoard(player) {
     
 
@@ -93,9 +99,7 @@ function createGameBoard(player) {
 
                     const shipData = dragData.draggedShip;
                     previousAffectedBoxes = [...affectedBoxes]; // make a shallow copy   
-                    let shipOrientationElement = document.querySelector("div[data-ship-orientation]");
-                    let shipOrientation = shipOrientationElement.dataset.shipOrientation;
-                    console.log(shipOrientation);
+                    let shipOrientation = getCurrentShipOrientation();
 
             
                     if (!shipData) {
@@ -120,8 +124,6 @@ function createGameBoard(player) {
                         );
             
                         
-                        console.log(affectedBoxes);
-                        console.log(previousAffectedBoxes);
                         affectedBoxes.forEach(box => {
                             box.classList.add('highlight');
                             box.dataset.dragAffected = "true"; // Add this line
@@ -144,54 +146,75 @@ function createGameBoard(player) {
             box.addEventListener('drop', function(event) {
                 event.preventDefault();
 
-                let shipOrientationElement = document.querySelector("div[data-ship-orientation]");
-                let shipOrientation = shipOrientationElement.dataset.shipOrientation;
+                let shipOrientation = getCurrentShipOrientation();
                 let lowerLetterBound = 65;
                 let upperLetterBound = 74;
-            
-                const shipData = JSON.parse(event.dataTransfer.getData('application/json'));
-            
-                // Extract the character and numeric parts of the box ID
                 const charPart = box.id[0];  // Assuming the format is always like "A5"
                 const numPart = parseInt(box.id.slice(1));
-            
-                // Calculate the adjusted position based on where the user clicked on the ship
-                const adjustedNumPart = numPart - shipData.offset;
-                console.log(shipData.offset);
-                console.log(adjustedNumPart);
-                let selectedChar = charPart.charCodeAt();
-                const rawData = event.dataTransfer.getData('application/json');
-                console.log("Dropped data:", rawData);
 
-                console.log(selectedChar + shipData.length);
-            
+                const shipData = JSON.parse(event.dataTransfer.getData('application/json'));
+
+                const adjustedNumPart = numPart - shipData.offset;
+                const adjustedTargetPosition = charPart + adjustedNumPart;  // The new position for the head of the ship
+                let affectedBoxes = getAffectedBoxes(adjustedTargetPosition, shipData.length, shipOrientation)
+
+                // Calculate the adjusted position based on where the user clicked on the ship
+                const headCoordinate = (charPart + numPart);
+
+                let selectedChar = charPart.charCodeAt();
+                            
                 // Check if the placement is out of bounds
                 if (shipOrientation == "Horizontal" && (adjustedNumPart <= 0 || adjustedNumPart + shipData.length - 1 > player.gameBoard.width)) {
                     console.error("Invalid ship placement: Out of bounds.");
                     box.classList.remove('highlight');
                     return;
-                } 
-
-                if (shipOrientation == "Vertical" && (selectedChar + shipData.length < lowerLetterBound || selectedChar + shipData.length - 1 > upperLetterBound)) {
+                } else if (shipOrientation == "Vertical" && (selectedChar + shipData.length < lowerLetterBound || selectedChar + shipData.length - 1 > upperLetterBound)) {
                     console.error("Invalid ship placement: Out of bounds.");
                     box.classList.remove('highlight');
                     return;
-                } 
+                } else if (player.gameBoard.placeShip(shipData.name, headCoordinate, shipOrientation) == false) {
+                    console.error("Invalid ship placement: Overlapping Ship.");
+                    affectedBoxes.forEach(box => {
+                        box.classList.remove('highlight');
+                    });
+                    return;
+                } else {
+                    affectedBoxes.forEach(box => {
+                        box.classList.remove('highlight');
+                        box.removeAttribute('data-drag-affected')
+                        box.classList.add('placed');
+                        box.dataset.hitMarker = "false";
+                        box.dataset.ship = shipData.name;
+                    });
+                }
 
-                const adjustedTargetPosition = charPart + adjustedNumPart;  // The new position for the head of the ship
+                let isVertical = shipOrientation === "Vertical";
+                let shipElement;
 
-                let affectedBoxes = getAffectedBoxes(adjustedTargetPosition, shipData.length, shipOrientation)
-                affectedBoxes.forEach(box => {
-                    box.classList.remove('highlight');
-                    box.classList.add('placed');
-                });
+                // console.log(`Attempting to place ${shipData.name} with length ${shipData.length} at position ${adjustedTargetPosition}.`);
+                
+                if (shipOrientation == "Horizontal") {
+                    shipElement = document.querySelector(`div#${shipData.name}.draggable.ship`)
+                }
 
-                console.log(`Attempting to place ${shipData.name} with length ${shipData.length} at position ${adjustedTargetPosition}.`);
-            
-            
-                // Place your ship based on adjustedTargetPosition as the head's position, using your existing logic or methods
-                // For example: player.gameBoard.placeShip(shipData.name, adjustedTargetPosition, shipOrientation);
-            
+                if (shipOrientation == "Vertical") {
+                    shipElement = document.querySelector(`div#vertical${shipData.name}.verticalDraggable.ship`)
+                }
+
+                let parentElement = shipElement.parentElement;
+                shipElement.remove();
+                
+                let placedDiv = document.createElement("div");
+                placedDiv.className = "placedText";
+                placedDiv.textContent = "Placed";
+                placedDiv.id = isVertical ? "vertical" : "horizontal";
+
+                // Append the new div to the parent element
+                parentElement.appendChild(placedDiv);
+                parentElement.style.justifyContent = "flex-start";
+                let shipObjectName = shipData.name;
+
+               
             });
             
             box.addEventListener('dragleave', function() {

@@ -228,10 +228,28 @@
     margin-left: 1em;
 }
 
+
 .shipbox {
     border: 1px solid green;
     background-color: rgba(0, 128, 0, 0.2); 
     height: 100%;
+}
+
+.placedText {
+    display: flex;
+    color: greenyellow;
+}
+
+.placedText#horizontal {
+    font-size: x-large;
+    margin-left: 1.5em;
+}
+
+.placedText#vertical {
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    font-size: large;
 }
 
 .gameInitializerContainer {
