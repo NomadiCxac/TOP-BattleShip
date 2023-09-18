@@ -360,3 +360,11 @@
     border: 1px solid #000; /* for visualization */
     box-sizing: border-box; /* to ensure border doesn't add to width/height */
 }
+
+#computer.box.placed.hit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 50px;
+    font-weight: 100;
+} 

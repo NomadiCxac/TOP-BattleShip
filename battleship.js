@@ -5,6 +5,7 @@ const createGameBoard =  require('./createGameBoard');
 const createGameStartElement = require('./createStartButton');
 const createShipPositionSwitcher = require("./positionSwitcher")
 const phaseUpdater = require('./updateCurrentPhase');
+const renderGameStartState = require('./gameDriverScript');
 const placePiecesOnComputerBoardFrontEnd = require('./placePiecesOnComputerBoardFrontEnd')
 import './battleship.css';
 
@@ -18,15 +19,28 @@ function generateRandomString() {
     return result;
 }
 
-
+// Initialize Player Name 
 let playerName = localStorage.getItem('playerName');
+
+// Create a new game from player name and set current state to game set up
 let currentGame = new Game (generateRandomString(), playerName)
 currentGame.currentState = "Game Set-Up";
-let currentPlayer = currentGame.player1;
 
+// Update the Game Phase HTML accordingly
 phaseUpdater(currentGame);
 
-let gameStart = createGameStartElement(currentGame);
+// Define the current player based on the current game class
+let currentPlayer = currentGame.player1;
+
+// Define the current computer based on the current game class
+let computer = currentGame.computer;
+
+// Generate the battleship pieces default state
+let pieces = battleshipPieces(currentPlayer, "Horizontal");
+
+
+
+let gameStartButton = createGameStartElement(currentGame, computer);
 
 let gameScreen = document.querySelector(".gameScreenContainer");
 
@@ -39,21 +53,12 @@ currentShipOrientation.dataset.shipOrientation = "Horizontal"
 currentShipOrientation.innerText = `Current Ship Position is: ${currentShipOrientation.dataset.shipOrientation}`
 gameScreen.appendChild(leftGameScreen);
 
-let pieces = battleshipPieces(currentPlayer, "Horizontal");
-leftGameScreen.appendChild(pieces);
 
 
 let shipPositionSwitcher = createShipPositionSwitcher(currentPlayer);
 
-let board1 = createGameBoard(currentPlayer, currentShipOrientation.dataset.shipOrientation);
-
-let computer = currentGame.computer;
-computer.placeAllShipsForAI()
-
-console.log(computer.gameBoard.ship)
-console.log(computer.gameBoard.ship["Carrier"].coordinates)
-
-let board2 = createGameBoard(currentGame.computer);
+let board1 = createGameBoard(currentPlayer);
+// let board2 = createGameBoard(currentGame.computer);
 
 
 
@@ -62,7 +67,8 @@ leftGameScreen.appendChild(pieces);
 leftGameScreen.appendChild(currentShipOrientation);
 leftGameScreen.appendChild(shipPositionSwitcher);
 gameScreen.appendChild(board1);
-// gameScreen.appendChild(gameStart);
-gameScreen.appendChild(board2);
-placePiecesOnComputerBoardFrontEnd(computer)
+gameScreen.appendChild(gameStartButton);
+// gameScreen.appendChild(board2);
+// placePiecesOnComputerBoardFrontEnd(computer)
+// renderGameStartState();
 

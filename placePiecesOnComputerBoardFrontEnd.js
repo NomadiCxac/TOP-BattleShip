@@ -9,7 +9,10 @@ function placePiecesOnComputerBoardFrontEnd(computer) {
             let shipBox = computerBoard.querySelector(`div#${coordinate}.box`);
             
             shipBox.classList.add("placed");
+            shipBox.classList.add("hit");
             shipBox.dataset.ship = shipType;
+            shipBox.id = "computer"
+            shipBox.textContent = "X"
         }
     }
 }

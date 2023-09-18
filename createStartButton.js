@@ -1,6 +1,6 @@
-const Game = require('./gameLoop');
+const renderGameStartState = require('./gameDriverScript');
 
-function createGameStartElement (game) {
+function createGameStartElement (game, computerGameBoard) {
     let gameStartContainer = document.createElement("div");
     gameStartContainer.className = "gameStartContainer";
 
@@ -21,7 +21,7 @@ function createGameStartElement (game) {
         } 
         
         if (game.checkPlayerReadyGameState() == true) {
-            console.log("True");
+            renderGameStartState(computerGameBoard)
             return;
         }
     }) 
