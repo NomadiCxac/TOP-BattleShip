@@ -1,4 +1,5 @@
 const { dragData } = require('./battleshipPieces');
+const gameDriverScript = require('./gameDriverScript');
 
 // let draggedShipData = null;  // at the beginning of the file
 
@@ -38,7 +39,7 @@ function getCurrentShipOrientation() {
 }
 
 
-function createGameBoard(player) {
+function createGameBoard(game, player) {
     
 
     // Generate div elements for Game Board
@@ -218,10 +219,7 @@ function createGameBoard(player) {
             });
             
             box.addEventListener('dragleave', function() {
-                // Remove the highlight
-                let previousBoxes;
 
-                      
                 if (affectedBoxes) {
                     previousBoxes = affectedBoxes;
                 }
@@ -232,9 +230,16 @@ function createGameBoard(player) {
                 }
                 
             });
+
+            box.addEventListener("click", function(e) {
+                let playerGuess = e.target.id;
+                gameDriverScript(game, playerGuess);
+            });
             
             row.appendChild(box);
         }
+
+       
 
         gameBoard.appendChild(row);
     }

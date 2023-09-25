@@ -1,23 +1,33 @@
-const placePiecesOnComputerBoardFrontEnd = require('./placePiecesOnComputerBoardFrontEnd')
+const placeBoardMarker = require('./placeBoardMarker');
+const phaseUpdater = require('./updateCurrentPhase');
 
-const createGameBoard = require("./createGameBoard");
+function gameDriverScript(game, playerGuess) {
 
-function renderGameStartState(computer) {
+    if (game.checkWinner()) {
+        alert("WoO");
+        return;
+    }
+    // console.log(game.playTurn(playerGuess));
 
-    console.log(computer.gameBoard);
+    if (!game.playTurn(playerGuess)) {
+        alert("Invalid Move! Try again.");
+        return;
+    }
+        
+    if (game.currentState = "Game Play Phase" && game.currentTurn == "Player Move") {               
+        placeBoardMarker(game, playerGuess, game.currentTurn);
+        game.updateState();
+        phaseUpdater(game);
+    }
+    // game.currentState = "Game Play Phase" &&
+    if ( game.currentTurn == "Computer Move") {               
+        let computerGuess = game.playTurn();
+        placeBoardMarker(game, computerGuess, game.currentTurn)
+        game.updateState();
+        phaseUpdater(game);
+        }   
+        return;
+    }
 
-    let gameScreen = document.querySelector(".gameScreenContainer");
 
-    let gameStartContainer = document.querySelector("div.gameStartContainer")
-    gameStartContainer.remove();
-
-    let leftGameScreen = document.querySelector("div.gameScreen-Left")
-    leftGameScreen.remove();
-
-    let computerGameBoard = createGameBoard(computer);
-    computer.placeAllShipsForAI()
-    gameScreen.appendChild(computerGameBoard);
-    placePiecesOnComputerBoardFrontEnd(computer);
-}
-
-module.exports = renderGameStartState;
+module.exports = gameDriverScript;

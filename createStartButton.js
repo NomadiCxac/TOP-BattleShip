@@ -1,6 +1,7 @@
-const renderGameStartState = require('./gameDriverScript');
+const renderGameStartState = require('./renderGameStartState');
+const phaseUpdater = require('./updateCurrentPhase');
 
-function createGameStartElement (game, computerGameBoard) {
+function createGameStartElement (game) {
     let gameStartContainer = document.createElement("div");
     gameStartContainer.className = "gameStartContainer";
 
@@ -13,15 +14,21 @@ function createGameStartElement (game, computerGameBoard) {
     startButton.id = "initStartButton";
     startButtonContainer.appendChild(startButton);
     startButton.addEventListener("click", function() {
-        console.log(game.player1.gameBoard.ship);
-        console.log(game.checkPlayerReadyGameState());
+
+        console.log(game.checkPlayerReadyGameState())
+
         if (game.checkPlayerReadyGameState() == false) {
             alert("Please Place All Your Ships in Legal Positions");
             return;
         } 
         
         if (game.checkPlayerReadyGameState() == true) {
-            renderGameStartState(computerGameBoard)
+            // game.updateState();
+            game.currentTurn = "Computer Move";
+            game.currentState = "Game Play Phase"
+            phaseUpdater(game);
+            renderGameStartState(game)      
+            // game.player1.gameBoard.display()
             return;
         }
     }) 

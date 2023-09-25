@@ -57,122 +57,84 @@ class Game {
         return this.start();
     }
 
-    playTurn() {
-        if (this.currentState === "Player Move") {
+    playTurn(move) {
+        if (this.currentTurn === "Player Move") {
             let isValidMove = false;
             let playerMove;
-        
+            
             while (!isValidMove) {
                 try {
-                    //prompt user for coordinate
-                    let prompt = "A1"; // Here you might want to get actual input from the user.
-                    playerMove = player.makeAttack(prompt);
+                    playerMove = this.player1.makeAttack(move);
                     isValidMove = true;
+                    (this.computer.gameBoard.display());
+                    this.computer.gameBoard.receiveAttack(playerMove);
+                    return playerMove;
                 } catch (error) {
+                    (this.computer.gameBoard.display());
                     console.error(error.message); // Output the error message.
-                    // Optionally, you can prompt the user with a message to enter a new coordinate.
+                    return false;
                 }
             }
         
-            computer.gameBoard.receiveAttack(playerMove);
+     
+
+            (this.computer.gameBoard.display());
         }
 
-        if (this.currentState = "Computer Move") {
-            let computerChoice = computer.easyAiMoves()
-            let computerMove = computer.makeAttack(computerChoice)
-            player.gameBoard.receiveAttack(computerMove);
+        if (this.currentTurn = "Computer Move") {
+            let computerChoice = this.computer.easyAiMoves()
+            let computerMove = this.computer.makeAttack(computerChoice)
+            this.player1.gameBoard.receiveAttack(computerMove);
+            (this.player1.gameBoard.display());
+            return computerChoice;
         }
     }
 
     updateState() {
         if (this.currentState === "Game Set-Up") {
+
             let turnValue = Math.floor(Math.random() * (2 - 1 + 1)) + 1;
+            this.currentState = "Game Play Phase"
             if (turnValue === 1) {
-                return this.currentState = "Player Move"
+                return this.currentTurn = "Player Move";
             } else {
-                return this.currentState = "Computer Move"
+                return this.currentTurn = "Computer Move"
             }
         }
 
-        if (this.currentState === "Player Move") {
-                return this.currentState = "Computer Move"
+        if (this.currentTurn === "Player Move") {
+                return this.currentTurn = "Computer Move"
             }
 
         
-        if (this.currentState === "Computer Move") {
-            return this.currentState = "Player Move"
+        if (this.currentTurn === "Computer Move") {
+            return this.currentTurn = "Player Move"
         }
     }
 
     checkWinner() {
-        if (player.gameBoard.gameOver()) {
-            return "Computer Wins"
+        if (this.player1.gameBoard.gameOver()) {
+            console.log("Computer Wins")
+            return true;
         }
 
-        if (computer.gameBoard.gameOver()) {
-            return "Player Wins"
+        if (this.computer.gameBoard.gameOver()) {
+            console.log("Player Wins")
+            return true;
         }
     }
 
 
 
     start() {
-        while(!checkWinner()) {
+        while(!this.checkWinner()) {
             this.updateState();
             this.playTurn();
         }
         
     }
+
+    
 }
 
 module.exports = Game;
-
-// // Get player name
-// let name = "player1"
-
-// // Create players
-let game = new Game(null, "player")
-
-console.log(game.checkPlayerReadyGameState())
-
-// let computer = new Player("computer");
-
-// // Place ship phase - test on random coordinates
-
-//     // "Carrier"
-//     player.gameBoard.placeShip("Carrier", "E5", "Horizontal")
-//     computer.gameBoard.placeShip("Carrier", "A1", "Horizontal")
-
-//     // "Battleship"
-//     player.gameBoard.placeShip("Battleship", "J7", "Horizontal")
-//     computer.gameBoard.placeShip("Battleship", "B10", "Vertical")
-
-//     // "Cruiser"
-//     player.gameBoard.placeShip("Cruiser", "A8", "Horizontal")
-//     computer.gameBoard.placeShip("Cruiser", "F1", "Horizontal")
-
-//     // "Submarine"
-//     player.gameBoard.placeShip("Submarine", "D1", "Horizontal")
-//     computer.gameBoard.placeShip("Submarine", "H10", "Vertical")
-
-//     // "Destroyer"
-//     player.gameBoard.placeShip("Destroyer", "B2", "Horizontal")
-//     computer.gameBoard.placeShip("Destroyer", "J1", "Horizontal")
-
-//     // player.gameBoard.display();
-//     computer.gameBoard.display();
-
-// // Attack phase 
-
-//     // Player attack phase
-//     let playerMove = player.makeAttack("A1")
-//     computer.gameBoard.receiveAttack(playerMove);
-
-//     computer.gameBoard.display();
-
-//     // Computer attack phase
-//     let computerChoice = computer.easyAiMoves()
-//     let computerMove = computer.makeAttack(computerChoice)
-//     player.gameBoard.receiveAttack(computerMove);
-
-//     player.gameBoard.display();

@@ -60,7 +60,6 @@ function battleshipPieces(player, orientation) {
                 shipBox.className = "shipbox";
                 shipBox.style.width = boxWidth + "px";
                 shipBox.addEventListener('mousedown', function(event) {
-                    console.log("Element clicked:", event.target);
                     shipPiece.setAttribute("data-offset", 0);
                 });
                 if (i == 0) {

@@ -5,8 +5,8 @@ const createGameBoard =  require('./createGameBoard');
 const createGameStartElement = require('./createStartButton');
 const createShipPositionSwitcher = require("./positionSwitcher")
 const phaseUpdater = require('./updateCurrentPhase');
-const renderGameStartState = require('./gameDriverScript');
-const placePiecesOnComputerBoardFrontEnd = require('./placePiecesOnComputerBoardFrontEnd')
+const renderGameStartState = require('./renderGameStartState');
+const placeBoardMarker = require('./placeBoardMarker')
 import './battleship.css';
 
 
@@ -40,7 +40,7 @@ let pieces = battleshipPieces(currentPlayer, "Horizontal");
 
 
 
-let gameStartButton = createGameStartElement(currentGame, computer);
+let gameStartButton = createGameStartElement(currentGame);
 
 let gameScreen = document.querySelector(".gameScreenContainer");
 
@@ -57,7 +57,7 @@ gameScreen.appendChild(leftGameScreen);
 
 let shipPositionSwitcher = createShipPositionSwitcher(currentPlayer);
 
-let board1 = createGameBoard(currentPlayer);
+let board1 = createGameBoard(currentGame, currentPlayer);
 // let board2 = createGameBoard(currentGame.computer);
 
 
@@ -69,6 +69,6 @@ leftGameScreen.appendChild(shipPositionSwitcher);
 gameScreen.appendChild(board1);
 gameScreen.appendChild(gameStartButton);
 // gameScreen.appendChild(board2);
-// placePiecesOnComputerBoardFrontEnd(computer)
+// placeBoardMarker(computer)
 // renderGameStartState();
 
