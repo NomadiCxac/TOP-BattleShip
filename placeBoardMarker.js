@@ -12,7 +12,6 @@ function placeBoardMarker(game, move, turn) {
                     shipBox.classList.add("placed");
                     shipBox.classList.add("hit");
                     shipBox.dataset.ship = shipType;
-                    shipBox.id = "player"
                     shipBox.textContent = "X"
                     return;
                 } 
@@ -22,7 +21,6 @@ function placeBoardMarker(game, move, turn) {
         let shipBoxMissed = playerBoard.querySelector(`div#${move}.box`);
     
             shipBoxMissed.classList.add("miss");
-            shipBoxMissed.id = "player"
             shipBoxMissed.textContent = "·"
 
     }
@@ -40,7 +38,6 @@ function placeBoardMarker(game, move, turn) {
                     shipBox.classList.add("placed");
                     shipBox.classList.add("hit");
                     shipBox.dataset.ship = shipType;
-                    shipBox.id = "computer"
                     shipBox.textContent = "X"
                     return;
                 }
@@ -49,7 +46,6 @@ function placeBoardMarker(game, move, turn) {
 
         let shipBoxMissed = computerBoard.querySelector(`div#${move}.box`);
             shipBoxMissed.classList.add("miss");
-            shipBoxMissed.id = "computer"
             shipBoxMissed.textContent = "·"
     }
 

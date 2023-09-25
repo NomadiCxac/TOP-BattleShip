@@ -58,6 +58,7 @@ class Game {
     }
 
     playTurn(move) {
+        console.log(move);
         if (this.currentTurn === "Player Move") {
             let isValidMove = false;
             let playerMove;
@@ -66,8 +67,6 @@ class Game {
                 try {
                     playerMove = this.player1.makeAttack(move);
                     isValidMove = true;
-                    (this.computer.gameBoard.display());
-                    this.computer.gameBoard.receiveAttack(playerMove);
                     return playerMove;
                 } catch (error) {
                     (this.computer.gameBoard.display());
@@ -75,13 +74,10 @@ class Game {
                     return false;
                 }
             }
-        
-     
 
-            (this.computer.gameBoard.display());
         }
 
-        if (this.currentTurn = "Computer Move") {
+        if (this.currentTurn === "Computer Move") {
             let computerChoice = this.computer.easyAiMoves()
             let computerMove = this.computer.makeAttack(computerChoice)
             this.player1.gameBoard.receiveAttack(computerMove);
@@ -92,23 +88,13 @@ class Game {
 
     updateState() {
         if (this.currentState === "Game Set-Up") {
-
-            let turnValue = Math.floor(Math.random() * (2 - 1 + 1)) + 1;
-            this.currentState = "Game Play Phase"
-            if (turnValue === 1) {
-                return this.currentTurn = "Player Move";
-            } else {
-                return this.currentTurn = "Computer Move"
-            }
-        }
-
-        if (this.currentTurn === "Player Move") {
-                return this.currentTurn = "Computer Move"
-            }
-
-        
-        if (this.currentTurn === "Computer Move") {
-            return this.currentTurn = "Player Move"
+            let turnValue = Math.floor(Math.random() * 2) + 1;
+            this.currentState = "Game Play Phase";
+            this.currentTurn = turnValue === 1 ? "Player Move" : "Computer Move";
+        } else if (this.currentTurn === "Player Move") {
+            this.currentTurn = "Computer Move";
+        } else if (this.currentTurn === "Computer Move") {
+            this.currentTurn = "Player Move";
         }
     }
 
@@ -122,6 +108,7 @@ class Game {
             console.log("Player Wins")
             return true;
         }
+        
     }
 
 
