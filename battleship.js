@@ -70,5 +70,8 @@ gameScreen.appendChild(board1);
 gameScreen.appendChild(gameStartButton);
 // gameScreen.appendChild(board2);
 // placeBoardMarker(computer)
-// renderGameStartState();
+// // renderGameStartState();
 
+// currentGame.player1.gameBoard.setAllShipsToDead();
+
+// currentGame.checkWinner();

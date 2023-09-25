@@ -13,12 +13,7 @@ function gameDriverScript(game, playerGuess) {
         return;
     }
 
-    if (game.checkWinner()) {
-        console.log("Stepped into 2");
-
-        alert("WoO");
-        return;
-    }
+   
     // console.log(game.playTurn(playerGuess));
 
     if (!game.playTurn(playerGuess)) {
@@ -34,22 +29,25 @@ function gameDriverScript(game, playerGuess) {
         placeBoardMarker(game, playerGuess, game.currentTurn);
         game.updateState();
         phaseUpdater(game);
+
+        if (game.checkWinner()) {
+
+            phaseUpdater(game);
+            return;
+        }
      
         let computerGuess = game.playTurn();
         placeBoardMarker(game, computerGuess, game.currentTurn)
         game.updateState();
         phaseUpdater(game);
         game.checkWinner()
-
-        return
     }
     // game.currentState = "Game Play Phase" &&
-    if ( game.currentTurn === "Computer Move") {               
-        console.log("Stepped into 5");
+    if (game.checkWinner()) {
 
-   
-        }   
+        phaseUpdater(game);
         return;
+        }
     }
 
 

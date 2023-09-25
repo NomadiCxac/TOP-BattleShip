@@ -58,7 +58,7 @@ class Game {
     }
 
     playTurn(move) {
-        console.log(move);
+        (this.computer.gameBoard.display());
         if (this.currentTurn === "Player Move") {
             let isValidMove = false;
             let playerMove;
@@ -67,6 +67,7 @@ class Game {
                 try {
                     playerMove = this.player1.makeAttack(move);
                     isValidMove = true;
+                    this.computer.gameBoard.receiveAttack(move);
                     return playerMove;
                 } catch (error) {
                     (this.computer.gameBoard.display());
@@ -81,7 +82,6 @@ class Game {
             let computerChoice = this.computer.easyAiMoves()
             let computerMove = this.computer.makeAttack(computerChoice)
             this.player1.gameBoard.receiveAttack(computerMove);
-            (this.player1.gameBoard.display());
             return computerChoice;
         }
     }
@@ -100,12 +100,16 @@ class Game {
 
     checkWinner() {
         if (this.player1.gameBoard.gameOver()) {
-            console.log("Computer Wins")
+            alert("Computer Wins");
+            this.currentState = "Game-Over";
+            this.currentTurn = "Computer Wins!"
             return true;
         }
 
         if (this.computer.gameBoard.gameOver()) {
-            console.log("Player Wins")
+            alert("Player Wins");
+            this.currentState = "Game-Over";
+            this.currentTurn = "Player Wins!"
             return true;
         }
         
