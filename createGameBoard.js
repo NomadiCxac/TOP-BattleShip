@@ -89,6 +89,7 @@ function createGameBoard(game, player) {
         
         let box = document.createElement("div");
             box.className = "box";
+            box.classList.add(`${player.name}`);
             box.id = alphaChar + j
 
             box.addEventListener('dragover', function(event) {
@@ -233,7 +234,14 @@ function createGameBoard(game, player) {
 
             box.addEventListener("click", function(e) {
                 let playerGuess = e.target.id;
+                
+            if (game.currentTurn == "Player Move" && e.target.classList.contains(game.player1.name)) {
+                alert("Cannot click your own board");
+                return;
+            } else {
                 gameDriverScript(game, playerGuess);
+            }
+
             });
             
             row.appendChild(box);

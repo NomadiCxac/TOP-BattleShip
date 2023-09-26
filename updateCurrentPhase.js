@@ -3,7 +3,6 @@ function phaseUpdater(game) {
     let gamePhase = document.querySelector(".gamePhase");
     let playerTurn = document.querySelector(".playerTurn");
 
-    console.log(game.currentState);
 
     if (game == null) {
         gamePhase.textContent = "Game Initializtion"
